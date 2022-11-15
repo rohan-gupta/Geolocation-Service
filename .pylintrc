@@ -1,0 +1,22 @@
+[MASTER]
+init-hook='import sys; import os; sys.path.append(os.getcwd());'
+extension-pkg-whitelist=ujson
+
+
+[MESSAGES CONTROL]
+disable=missing-docstring,missing-function-docstring,missing-module-docstring,unused-import,line-too-long,wrong-import-position,broad-except,duplicate-code
+
+
+[TYPECHECK]
+generated-members=.*dynamodb.*
+ignored-modules=bs4,ujson,requests,scrapehelper,pytest,s2geometry,fastkml,unzip_requirements
+
+
+[FORMAT]
+
+
+[REPORTS]
+reports=yes
+
+
+[IMPORTS]

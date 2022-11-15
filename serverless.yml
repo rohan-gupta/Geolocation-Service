@@ -1,0 +1,112 @@
+org: fpgaia
+
+
+app: utility-services
+
+
+service: pathfinder-coverer
+
+
+plugins:
+  - serverless-python-requirements
+  - serverless-plugin-datadog
+
+
+package:
+  exclude:
+    - .dynamodb/**
+    - coverage/**
+    - false/**
+    - test_*.py
+    - test_data/**
+    - venv/**
+    - node_modules/**
+
+
+custom:
+  pythonRequirements:
+    zip: true
+    invalidateCaches: true
+    useDownloadCache: false
+    useStaticCache: false
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
+  bucket: fp-apac-vci-gaia-rover-condition-${self:provider.stage}-${self:provider.stage}
+  datadog:
+    addLayers: true
+    flushMetricsToLogs: true
+    enableXrayTracing: true
+    enableDDTracing: true
+    enableTags: true
+    site: datadoghq.eu
+    apiKey: ${env:DATADOG_API_KEY}
+  datadogTags:
+    dh_squad: vci
+    dh_tribe: new business
+    dh_env: ${self:provider.stage}
+    vci_app: probes
+
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: ${opt:region}
+  stage: ${opt:stage, 'dev'}
+  accountId: ${opt:accountId}
+  memorySize: 512
+  timeout: 30
+  versionFunctions: false
+  logs:
+    restApi: true
+  tracing:
+    apiGateway: true
+    lambda: true
+  deploymentBucket:
+    name: fp-apac-vci-gaia-deploys-${self:provider.region}-${self:provider.stage}
+    maxPreviousDeploymentArtifacts: 3
+    tags:
+      key1: squad
+      key2: vci
+  deploymentPrefix: coverer
+  environment:
+    S3_CONDITION_BUCKET: ${self:custom.bucket}
+    TZ: Asia/Singapore
+    SERVICE_NAME: pathfinder
+    STAGE: ${self:provider.stage}
+    DATADOG_API_KEY: ${env:DATADOG_API_KEY}
+    REGION_NAME: ${self:provider.region}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource:
+        - "arn:aws:s3:::${self:custom.bucket}/*"
+
+
+functions:
+  coverer_get_all_latitude_longitude:
+    handler: coverer/handler.get_all_latitude_longitude
+    events:
+      - http:
+          path: api/v1/coverage
+          method: post
+          cors:
+            origin: 
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+            cacheControl: 'max-age=600, s-maxage=600, proxy-revalidate'
+    tags: ${self:custom.datadogTags}

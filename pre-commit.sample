@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source venv/bin/activate
+echo `pwd`
+result=`pylint --rcfile=.pylintrc ./coverer/*`
+grepword="Your code has been rated at 10.00/10"
+if [[ "$result" == *$grepword* ]]; then
+        exit 0
+else
+        echo $result
+        exit 1
+fi
