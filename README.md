@@ -1,4 +1,4 @@
-# Coverer [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5d3845b850a744d5a52f48b16ffb1816)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deliveryhero/fp-apac-gaia-pathfinder&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/5d3845b850a744d5a52f48b16ffb1816)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=deliveryhero/fp-apac-gaia-pathfinder&utm_campaign=Badge_Coverage)
+# Geolocation Service [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5d3845b850a744d5a52f48b16ffb1816)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deliveryhero/fp-apac-gaia-pathfinder&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/5d3845b850a744d5a52f48b16ffb1816)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=deliveryhero/fp-apac-gaia-pathfinder&utm_campaign=Badge_Coverage)
 
 ## Description
 This service produces a set of lat/lon spread over a given geographical region.
